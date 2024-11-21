@@ -1,0 +1,48 @@
+
+//Function to write data to the file
+
+void filterByGradeThreshold(Student students[], int count, float threshold);
+void writeFile(Student students[], int count, const char* filename);
+
+int main() {
+    Student students[MAX_RECORDS];
+    int count = 0;
+    char inputFile[] = "C:\\Users\\ekoln\\OneDrive\\Desktop\\assignment6.txt";
+    char outputFile[] = "output.txt";
+
+    // Read data from file
+    readFile(students, &count, inputFile);
+    printf("Data successfully read from %s\n", inputFile);
+
+    // Filter records by threshold
+    printf("Filtered records (grades > 85):\n");
+    filterByGradeThreshold(students, count, 85.0);
+
+    // Write data to file
+    writeFile(students, count, outputFile);
+    printf("Data successfully written to %s\n", outputFile);
+
+    return 0;
+}
+
+void filterByGradeThreshold(Student students[], int count, float threshold) {
+    for (int i = 0; i < count; i++) {
+        if (students[i].grade > threshold) {
+            printf("%d, %s, %.2f\n", students[i].id, students[i].name, students[i].grade);
+        }
+    }
+}
+
+void writeFile(Student students[], int count, const char* filename) {
+    FILE* file = fopen(filename, "w");
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < count; i++) {
+        fprintf(file, "%d, %s, %.2f\n", students[i].id, students[i].name, students[i].grade);
+    }
+
+    fclose(file);
+}
