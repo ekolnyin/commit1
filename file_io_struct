@@ -1,0 +1,51 @@
+/*
+*  FILE:    file_io_structs.cpp
+*  PROJECT:    SENG1005
+*  PROGRAMMER: Elizabeth Kolnyin
+*  FIRST VERSION: 2024
+*  DESCRIPTION: This is for basic file handling to read data from input file
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_RECORDS 100
+
+typedef struct {
+    int id;
+    char name[50];
+    float grade;
+} Student;
+
+void readFile(Student students[], int* count, const char* filename);
+
+int main() {
+    Student students[MAX_RECORDS];
+    int count = 0;
+    char inputFile[] = "C:\\Users\\ekoln\\OneDrive\\Desktop\\assignment6.txt";
+
+    // Read data from file
+    readFile(students, &count, inputFile);
+    printf("Data successfully read from %s\n", inputFile);
+
+    return 0;
+}
+
+
+void readFile(Student students[], int* count, const char* filename) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
+    //Reset count
+    *count = 0;
+    while (fscanf_s(file, "%d,%49[^,],%f",
+        &students[*count].id,
+        students[*count].name,
+        (unsigned)_countof(students[*count].name),
+        &students[*count].grade) == 3) {
+        (*count)++;
+    }
+
+    fclose(file);
