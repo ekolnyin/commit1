@@ -1,0 +1,28 @@
+/*
+DESCRIPTION: Functionality to calculate average grade
+*/
+float calculateAverageGrade(Student students[], int count);
+
+int main() {
+    Student students[MAX_RECORDS];
+    int count = 0;
+    char inputFile[] = "C:\\Users\\ekoln\\OneDrive\\Desktop\\assignment6.txt";
+
+    // Read data from file
+    readFile(students, &count, inputFile);
+    printf("Data successfully read from %s\n", inputFile);
+
+    // Calculate and display average grade
+    float average = calculateAverageGrade(students, count);
+    printf("Average grade: %.2f\n", average);
+
+    return 0;
+}
+
+float calculateAverageGrade(Student students[], int count) {
+    float sum = 0.0;
+    for (int i = 0; i < count; i++) {
+        sum += students[i].grade;
+    }
+    return count > 0 ? sum / count : 0.0;
+}
